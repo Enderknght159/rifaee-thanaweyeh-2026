@@ -648,7 +648,7 @@ ul{padding:0;list-style:none}
 .verse{
   font-family:var(--font-quran);font-weight:700;
   font-size:clamp(1.32rem,2.95vw,3.35rem);
-  line-height:1.9;color:var(--green);text-align:center;margin:0;
+  line-height:2.1;color:var(--green);text-align:center;margin:0;
   word-spacing:-.09em;
   opacity:0;
 }
