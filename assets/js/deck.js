@@ -21,6 +21,9 @@
   const N = scenes.length;
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
+  /* scene duration drives the slow, uninterrupted motion */
+  scenes.forEach((s, k) => s.style.setProperty("--dur", durations[k] + "ms"));
+
   /* ---------- verse split ---------- */
   let wordIndex = 0;
   document.querySelectorAll("[data-split]").forEach(p => {
@@ -80,16 +83,28 @@
 
   function enter(n) {
     const next = ((n % N) + N) % N;
+    const prev = scenes[index];
     if (next === index && started) {
       // restart current scene cleanly
-      const cur = scenes[index];
-      cur.classList.remove("is-active");
-      void cur.offsetWidth;
-      cur.classList.add("is-active");
+      clearTimeout(prev._leaveTimer);
+      prev.classList.remove("is-leaving");
+      prev.classList.remove("is-active");
+      void prev.offsetWidth;
+      prev.classList.add("is-active");
     } else {
-      scenes[index].classList.remove("is-active");
+      prev.classList.remove("is-active");
+      if (started) {
+        prev.classList.add("is-leaving");
+        clearTimeout(prev._leaveTimer);
+        prev._leaveTimer = setTimeout(() => {
+          if (!prev.classList.contains("is-active")) prev.classList.remove("is-leaving");
+        }, 1120);
+      }
       index = next;
-      scenes[index].classList.add("is-active");
+      const cur = scenes[index];
+      clearTimeout(cur._leaveTimer);
+      cur.classList.remove("is-leaving");
+      cur.classList.add("is-active");
     }
     sceneStart = clock;
     setCounters(index);
