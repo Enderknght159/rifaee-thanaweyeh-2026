@@ -1,0 +1,5 @@
+.obsidian/
+cook/
+*.zip
+assets/fonts/gf.css
+assets/fonts/Cairo-*.woff2
