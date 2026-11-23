@@ -96,6 +96,19 @@ ul{padding:0;list-style:none}
 
 .deck{position:fixed;inset:0;isolation:isolate;overflow:hidden;background:var(--sand-light)}
 
+/* النجمة الثمانية من نمط الهوية */
+.star{
+  display:inline-block;
+  clip-path:polygon(50% 0%,60% 24%,82% 18%,76% 40%,100% 50%,76% 60%,82% 82%,60% 76%,50% 100%,40% 76%,18% 82%,24% 60%,0% 50%,24% 40%,18% 18%,40% 24%);
+}
+
+/* أيقونات الهوية: خط 1.8 */
+.ico{
+  width:1.25em;height:1.25em;fill:none;stroke:currentColor;
+  stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;
+  flex:none;overflow:visible;
+}
+
 /* ---------- Scenes ---------- */
 .scene{
   position:absolute;inset:0;overflow:hidden;
@@ -252,7 +265,7 @@ ul{padding:0;list-style:none}
   max-height:calc(100vh - var(--topH) - var(--footH) - 10px - 92px);
   transform:translateX(-50%);
   background-color:var(--paper);
-  background-image:var(--pattern);
+  background-image:none;
   background-size:110px;
   border:3px solid var(--gold);
   border-radius:var(--r-lg);
@@ -307,9 +320,12 @@ ul{padding:0;list-style:none}
 /* ---------- Type ---------- */
 .display,.title,.h2{
   font-family:var(--font-display);font-weight:400;
-  line-height:1.14;color:var(--green);letter-spacing:0;
+  line-height:1.14;color:var(--ink);letter-spacing:0;
 }
-.display{font-size:var(--fs-display)}
+.display{
+  font-size:var(--fs-display);
+  line-height:1.07;
+}
 .title{font-size:var(--fs-title)}
 .poster__body--split .title{font-size:clamp(2rem,3.95vw,4.7rem)}
 .poster__body--split .display{font-size:clamp(2.4rem,4.7vw,5.6rem)}
@@ -362,7 +378,7 @@ ul{padding:0;list-style:none}
 }
 .note__title .ico{width:1.25em;height:1.25em;color:var(--red)}
 .note p{font-size:var(--fs-body);line-height:1.65;color:var(--text)}
-.note strong{color:var(--ink);font-weight:700}
+.note strong{color:var(--green);font-weight:700}
 .note--impact{border-color:rgba(207,172,93,.5);background:linear-gradient(180deg,rgba(238,228,201,.55),rgba(244,238,222,.9))}
 .note--impact .note__title{color:var(--green)}
 .note--impact .note__title .ico{color:var(--green)}
@@ -475,9 +491,9 @@ ul{padding:0;list-style:none}
 .hubTop{display:flex;align-items:center;justify-content:center;gap:.6em;margin-bottom:.4em}
 
 /* program rows */
-.prog{display:grid;gap:0;width:100%}
+.prog{display:grid;gap:0;width:100%;max-width:780px;margin-inline:auto}
 .prog__row{
-  display:flex;align-items:center;gap:clamp(10px,1vw,16px);
+  display:flex;align-items:center;justify-content:center;gap:clamp(10px,1vw,16px);
   padding:clamp(9px,1.2vh,14px) 0;border-bottom:1px solid rgba(207,172,93,.3);
   text-align:start;
 }
@@ -488,6 +504,7 @@ ul{padding:0;list-style:none}
   background:var(--mint);color:var(--green);
 }
 .prog__ico .ico{width:54%;height:54%}
+.prog__txt{flex:none;min-width:0}
 .prog__txt b{display:block;font-family:var(--font-display);font-weight:400;font-size:clamp(.94rem,1.1vw,1.18rem);color:var(--ink);line-height:1.35}
 .prog__txt span{display:block;font-size:clamp(.74rem,.82vw,.88rem);color:var(--text);margin-top:.15em}
 
@@ -597,12 +614,13 @@ ul{padding:0;list-style:none}
 .svgWater .goldtxt{fill:var(--green);font-family:var(--font-display)}
 
 /* digital cards */
-.digi{display:grid;gap:clamp(6px,.8vh,10px);width:100%}
+.digi{display:grid;gap:clamp(6px,.8vh,10px);width:100%;justify-items:center}
 .digi__card{
-  display:flex;align-items:center;gap:clamp(8px,.8vw,12px);
-  padding:clamp(9px,1.1vh,13px) clamp(10px,.9vw,14px);
+  display:flex;align-items:center;justify-content:center;gap:clamp(8px,.8vw,12px);
+  padding:clamp(9px,1.1vh,13px) clamp(14px,1.4vw,22px);
   background:var(--white);border:1px solid rgba(207,172,93,.35);
   box-shadow:var(--shadow);text-align:start;opacity:0;
+  width:min(100%,600px);
 }
 .digi__card .ico{width:clamp(22px,1.9vw,28px);height:clamp(22px,1.9vw,28px);color:var(--green)}
 .digi__card b{display:block;font-family:var(--font-display);font-weight:400;font-size:clamp(.84rem,.96vw,1.04rem);color:var(--ink);line-height:1.3}
