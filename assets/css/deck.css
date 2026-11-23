@@ -55,8 +55,8 @@
   --fs-display:clamp(3rem,5.9vw,7rem);
   --fs-title:clamp(2.3rem,4.3vw,5.3rem);
   --fs-h2:clamp(1.45rem,2.05vw,2.3rem);
-  --fs-lead:clamp(1.08rem,1.46vw,1.72rem);
-  --fs-body:clamp(.98rem,1.13vw,1.32rem);
+  --fs-lead:clamp(1.12rem,1.55vw,1.82rem);
+  --fs-body:clamp(1rem,1.15vw,1.34rem);
   --fs-small:clamp(.8rem,.9vw,.98rem);
 
   /* الزوايا والظلال من الهوية */
@@ -174,6 +174,8 @@ ul{padding:0;list-style:none}
   padding:.42em 1.2em;box-shadow:0 4px 14px rgba(1,55,60,.20);
   white-space:nowrap;
 }
+.topbar__chapter span.is-swap{animation:chapterSwap .55s var(--ease) both}
+@keyframes chapterSwap{from{opacity:0;transform:translateY(-7px)}to{opacity:1;transform:none}}
 .topbar__chapter .star{width:8px;height:8px;background:var(--green);flex:none}
 
 /* ---------- Footer (الهوية) ---------- */
@@ -273,7 +275,7 @@ ul{padding:0;list-style:none}
   padding:clamp(22px,2.3vh,32px) clamp(22px,2.6vw,46px) clamp(18px,2vh,28px);
   opacity:0;
 }
-.scene.is-active .poster{animation:posterUp 1.15s var(--ease) 1.05s both}
+.scene.is-active .poster{animation:posterUp 1.15s var(--ease) 1.25s both}
 .poster--side{
   left:var(--pad);right:auto;top:calc(var(--topH) + 4px + clamp(18px,2.2vh,28px));
   bottom:calc(var(--footH) + 10px + clamp(18px,2.2vh,28px));
@@ -281,14 +283,14 @@ ul{padding:0;list-style:none}
   transform:none;
   display:flex;flex-direction:column;justify-content:center;
 }
-.scene.is-active .poster--side{animation:posterSide 1.15s var(--ease) 1.05s both}
+.scene.is-active .poster--side{animation:posterSide 1.15s var(--ease) 1.25s both}
 .poster--paper{
   top:50%;bottom:auto;transform:translate(-50%,-50%);
   width:min(88vw,1460px);
   max-height:calc(100vh - var(--topH) - var(--footH) - 44px);
   display:flex;flex-direction:column;justify-content:center;
 }
-.scene.is-active .poster--paper{animation:posterCenter 1.15s var(--ease) 1.05s both}
+.scene.is-active .poster--paper{animation:posterCenter 1.15s var(--ease) 1.25s both}
 .poster--narrow{width:min(60vw,1080px)}
 .poster--wide{width:min(76vw,1400px)}
 .poster--verse{width:min(80vw,1300px)}
@@ -327,8 +329,8 @@ ul{padding:0;list-style:none}
   line-height:1.07;
 }
 .title{font-size:var(--fs-title)}
-.poster__body--split .title{font-size:clamp(2rem,3.95vw,4.7rem)}
-.poster__body--split .display{font-size:clamp(2.4rem,4.7vw,5.6rem)}
+.poster__body--split .title{font-size:clamp(2.1rem,4.2vw,5rem)}
+.poster__body--split .display{font-size:clamp(2.5rem,4.9vw,5.9rem)}
 .s7 .display{font-size:clamp(2.5rem,4.6vw,5.5rem)}
 .h2{font-size:var(--fs-h2);color:var(--ink);line-height:1.35}
 .display--ink,.title--ink{color:var(--ink)}
@@ -486,7 +488,7 @@ ul{padding:0;list-style:none}
   opacity:0;
 }
 .hubItem .ico{width:clamp(24px,2.1vw,32px);height:clamp(24px,2.1vw,32px);color:var(--green)}
-.hubItem b{font-family:var(--font-display);font-weight:400;font-size:clamp(.78rem,.92vw,1rem);color:var(--ink);line-height:1.35}
+.hubItem b{font-family:var(--font-display);font-weight:400;font-size:clamp(.82rem,.98vw,1.06rem);color:var(--ink);line-height:1.35}
 .scene.is-active .hubItem{animation:hubIn .9s var(--ease) both;animation-delay:calc(1.5s + var(--i)*.08s)}
 .hubTop{display:flex;align-items:center;justify-content:center;gap:.6em;margin-bottom:.4em}
 
@@ -503,7 +505,7 @@ ul{padding:0;list-style:none}
   width:clamp(38px,3.2vw,50px);height:clamp(38px,3.2vw,50px);
   background:var(--mint);color:var(--green);
 }
-.prog__ico .ico{width:54%;height:54%}
+.prog__ico .ico{width:54%;height:auto;aspect-ratio:1}
 .prog__txt{flex:none;min-width:0}
 .prog__txt b{display:block;font-family:var(--font-display);font-weight:400;font-size:clamp(.94rem,1.1vw,1.18rem);color:var(--ink);line-height:1.35}
 .prog__txt span{display:block;font-size:clamp(.74rem,.82vw,.88rem);color:var(--text);margin-top:.15em}
@@ -536,7 +538,7 @@ ul{padding:0;list-style:none}
   position:relative;color:var(--green);
 }
 .seal::before{content:"";position:absolute;inset:6px;border:1px dashed rgba(207,172,93,.7);border-radius:50%}
-.seal .ico{width:34%;height:34%;transform:translateY(-4px)}
+.seal .ico{width:34%;height:auto;aspect-ratio:1;transform:translateY(-4px)}
 .seal b{position:absolute;bottom:11%;inset-inline:0;text-align:center;font-family:var(--font-display);font-size:.66rem;color:var(--green);font-weight:400}
 .checkList{display:grid;gap:clamp(7px,1vh,11px);width:100%}
 .checkList li{display:flex;align-items:center;gap:.6em;justify-content:center;font-family:var(--font-display);font-weight:400;font-size:clamp(.88rem,1vw,1.08rem);color:var(--ink)}

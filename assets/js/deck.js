@@ -101,7 +101,15 @@
       s.firstElementChild.style.transform = "scaleX(0)";
     });
     paintSceneNo();
-    if (chapterLabel) chapterLabel.textContent = scenes[index].dataset.chapter || "";
+    if (chapterLabel) {
+      const nextChapter = scenes[index].dataset.chapter || "";
+      if (chapterLabel.textContent !== nextChapter) {
+        chapterLabel.textContent = nextChapter;
+        chapterLabel.classList.remove("is-swap");
+        void chapterLabel.offsetWidth;
+        chapterLabel.classList.add("is-swap");
+      }
+    }
     deck.dataset.scene = String(index + 1);
     scenes.forEach((s, k) => s.setAttribute("aria-hidden", k === index ? "false" : "true"));
   }
