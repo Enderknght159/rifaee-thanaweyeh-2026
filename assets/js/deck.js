@@ -260,25 +260,27 @@
     })));
   }
 
-  Promise.all([
-    preload(),
-    document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()
-  ]).then(() => {
+  let booted = false;
+  function boot() {
+    if (booted) return;
+    booted = true;
     if (loadBar) loadBar.style.width = "100%";
-    setTimeout(() => {
-      loader.classList.add("is-gone");
-      enter(0);
-      setPlaying(true);
-      lastFrame = performance.now();
-      requestAnimationFrame(frame);
-    }, 420);
-  }).catch(() => {
     loader.classList.add("is-gone");
     enter(0);
     setPlaying(true);
     lastFrame = performance.now();
     requestAnimationFrame(frame);
-  });
+  }
+
+  Promise.all([
+    preload(),
+    document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()
+  ]).then(() => {
+    setTimeout(boot, 420);
+  }).catch(boot);
+
+  /* never hold the show behind a stalled image on a weak connection */
+  setTimeout(boot, 18000);
 
   /* ---------- deep link + debug ---------- */
   const jump = new URLSearchParams(location.search).get("s");
