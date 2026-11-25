@@ -152,11 +152,13 @@
     if (e.data && e.data.type === "close-deck") closeOverlay();
   });
 
+  const toggleDeck = () => (overlay.classList.contains("is-open") ? closeOverlay() : openOverlay());
+
   /* ---------- controls ---------- */
   document.getElementById("prevBtn").addEventListener("click", e => { e.stopPropagation(); prev(); });
   document.getElementById("nextBtn").addEventListener("click", e => { e.stopPropagation(); next(); });
   document.getElementById("fsBtn").addEventListener("click", e => { e.stopPropagation(); toggleFullscreen(); });
-  document.getElementById("deckBtn").addEventListener("click", e => { e.stopPropagation(); openOverlay(); });
+  document.getElementById("deckBtn").addEventListener("click", e => { e.stopPropagation(); toggleDeck(); });
   document.getElementById("indexBtn").addEventListener("click", e => { e.stopPropagation(); toggleIndex(); });
   document.getElementById("indexClose").addEventListener("click", e => { e.stopPropagation(); closeIndex(); });
   document.querySelectorAll("[data-open-deck]").forEach(b =>
@@ -177,20 +179,28 @@
   });
 
   document.addEventListener("keydown", e => {
-    if (e.key === "Escape") {
+    const code = e.code || "";
+    const key = (e.key || "").toLowerCase();
+    if (code === "Escape") {
       if (overlay.classList.contains("is-open")) closeOverlay();
       else closeIndex();
       return;
     }
-    if ((e.key === " " || e.code === "Space") && e.target instanceof Element && e.target.closest("button, a")) return;
-    if (e.key === " " || e.code === "Space") { e.preventDefault(); next(); }
-    else if (e.key === "ArrowLeft") { e.preventDefault(); next(); }
-    else if (e.key === "ArrowRight") { e.preventDefault(); prev(); }
-    else if (e.key === "Home") { e.preventDefault(); go(0); }
-    else if (e.key === "End") { e.preventDefault(); go(N - 1); }
-    else if (e.key.toLowerCase() === "f") toggleFullscreen();
-    else if (e.key.toLowerCase() === "i") toggleIndex();
-    else if (e.key.toLowerCase() === "d") openOverlay();
+    // أثناء فتح عرض الإنجاز: لا نتنقل في شرائح الاجتماع، وD/Esc يرجعان
+    if (overlay.classList.contains("is-open")) {
+      if (code === "KeyD" || key === "د") closeOverlay();
+      return;
+    }
+    const isSpace = code === "Space" || e.key === " ";
+    if (isSpace && e.target instanceof Element && e.target.closest("button, a")) return;
+    if (isSpace) { e.preventDefault(); next(); }
+    else if (code === "ArrowLeft" || e.key === "ArrowLeft") { e.preventDefault(); next(); }
+    else if (code === "ArrowRight" || e.key === "ArrowRight") { e.preventDefault(); prev(); }
+    else if (code === "Home") { e.preventDefault(); go(0); }
+    else if (code === "End") { e.preventDefault(); go(N - 1); }
+    else if (code === "KeyF" || key === "f" || key === "ف") toggleFullscreen();
+    else if (code === "KeyI" || key === "i" || key === "ي") toggleIndex();
+    else if (code === "KeyD" || key === "d" || key === "د") toggleDeck();
   });
 
   /* ---------- preload ---------- */

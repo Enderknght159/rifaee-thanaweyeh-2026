@@ -230,7 +230,7 @@
       e.preventDefault(); autoPaused = false; enter(0); setPlaying(true);
     } else if (e.key === "End") {
       e.preventDefault(); autoPaused = false; enter(N - 1); setPlaying(true);
-    } else if (e.key.toLowerCase() === "f") {
+    } else if (e.code === "KeyF" || e.key.toLowerCase() === "f" || e.key === "ف") {
       document.getElementById("fsBtn").click();
     }
   });
@@ -314,7 +314,8 @@
     });
     deck.appendChild(back);
     document.addEventListener("keydown", e => {
-      if (e.key === "Escape" && window.parent !== window) {
+      const key = (e.key || "").toLowerCase();
+      if ((e.code === "Escape" || e.code === "KeyD" || key === "د") && window.parent !== window) {
         window.parent.postMessage({ type: "close-deck" }, "*");
       }
     });
