@@ -182,6 +182,7 @@
       else closeIndex();
       return;
     }
+    if ((e.key === " " || e.code === "Space") && e.target instanceof Element && e.target.closest("button, a")) return;
     if (e.key === " " || e.code === "Space") { e.preventDefault(); next(); }
     else if (e.key === "ArrowLeft") { e.preventDefault(); next(); }
     else if (e.key === "ArrowRight") { e.preventDefault(); prev(); }
