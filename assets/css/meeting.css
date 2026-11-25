@@ -7,6 +7,9 @@
 /* ---------- Stage ---------- */
 .mdeck{background:var(--sand-light)}
 .mscene{--fg:var(--ink);--fg2:var(--text);--acc:var(--green);--acc-soft:var(--mint);color:var(--fg)}
+/* انتقال أنعم وأسرع بين شرائح اللقاء اليدوية */
+.mscene.is-active{animation-duration:1.35s}
+.mscene.is-leaving{animation-duration:1.35s}
 
 .mwrap{
   position:absolute;inset:calc(var(--topH) + 10px) 0 calc(var(--footH) + 10px);
@@ -84,8 +87,8 @@
 .mcover__veil{
   position:absolute;inset:0;z-index:1;pointer-events:none;
   background:
-    radial-gradient(120% 90% at 50% 18%,rgba(0,130,83,.35),rgba(0,130,83,.86) 58%,rgba(0,74,48,.95) 100%),
-    linear-gradient(180deg,rgba(1,55,60,.34),rgba(1,55,60,.18) 45%,rgba(1,55,60,.62));
+    radial-gradient(125% 95% at 50% 16%,rgba(0,116,74,.34),rgba(0,130,83,.84) 62%,rgba(0,74,48,.94) 100%),
+    linear-gradient(180deg,rgba(1,55,60,.32),rgba(1,55,60,.14) 42%,rgba(1,55,60,.60));
 }
 .mcover__veil::after{
   content:"";position:absolute;inset:-56px;
@@ -93,6 +96,11 @@
 }
 .mscene.is-active .mcover__veil::after{animation:bgDrift var(--dur,9s) cubic-bezier(.37,0,.63,1) both}
 .mcover{position:relative;z-index:6;display:grid;justify-items:center;gap:clamp(8px,1.4vh,18px);text-align:center;max-width:1400px}
+.mcover::before{
+  content:"";position:absolute;z-index:-1;inset:-12% -14%;
+  background:radial-gradient(58% 54% at 50% 44%,rgba(0,62,40,.46),rgba(0,62,40,.18) 58%,rgba(0,62,40,0) 78%);
+  pointer-events:none;
+}
 .mcover .mdisplay{color:#fff;text-shadow:0 6px 34px rgba(0,30,20,.35)}
 .mcover .mlead{color:rgba(255,255,255,.94)}
 .mcover__brand{display:flex;align-items:center;justify-content:center;gap:.6em;color:#fff;font-family:var(--font-display);font-size:clamp(.86rem,1.08vw,1.2rem)}
@@ -233,7 +241,7 @@
 .mdonate__label{font-family:var(--font-display);color:var(--green);font-size:clamp(.9rem,1.1vw,1.15rem)}
 .mdonate__title{font-family:var(--font-display);color:var(--ink);font-size:clamp(1.5rem,2.6vw,2.8rem);line-height:1.2}
 .mdonate .mnote{color:var(--text)}
-.mdonate .mhint{color:var(--text);opacity:.8}
+.mdonate .mhint{color:var(--text);opacity:.85;font-size:clamp(.84rem,1vw,1.04rem)}
 .mdonate .mbtn{margin-block:.35em}
 
 .mbtn{
@@ -252,7 +260,7 @@
 .mbtn--ghost:hover{background:rgba(207,172,93,.16);color:var(--fg)}
 
 .mhint{font-size:clamp(.8rem,.95vw,1rem);color:var(--fg2);line-height:1.6}
-.mscene--dark .mhint{color:rgba(255,255,255,.8)}
+.mscene--dark .mstack > .mhint{color:rgba(255,255,255,.82)}
 
 /* ---------- Chrome tweaks ---------- */
 .mtop__side{display:flex;align-items:center;gap:8px;flex:none}
@@ -312,8 +320,10 @@
 .mindex__n{font-family:var(--font-display);color:var(--green);font-size:clamp(.95rem,1.1vw,1.15rem);direction:ltr;min-width:1.8em}
 .mindex__t b{display:block;font-family:var(--font-display);font-weight:400;color:var(--ink);font-size:clamp(.95rem,1.15vw,1.2rem);line-height:1.35}
 .mindex__t span{display:block;font-size:clamp(.74rem,.88vw,.92rem);color:var(--text)}
-.mindex__go{color:var(--gold)}
-.mindex__go .ico{width:15px;height:15px}
+.mindex__go{color:var(--green);opacity:.65;display:inline-flex}
+.mindex__go .ico{width:16px;height:16px}
+.mindex__item:hover .mindex__go{opacity:1}
+.mindex__item.is-current .mindex__go{opacity:1;color:var(--green-deep)}
 
 /* ---------- Existing show overlay ---------- */
 .moverlay{
@@ -329,6 +339,7 @@
   .mAgenda{grid-template-columns:1fr}
   .mAgenda__t b{font-size:clamp(1rem,2.2vw,1.4rem)}
   .mdonate{grid-template-columns:1fr}
+  .mdonate__main{justify-items:center;text-align:center}
   .mdonate__side{border-inline-start:0;border-top:1px solid rgba(207,172,93,.5)}
   .mwm{font-size:clamp(12rem,44vw,24rem);opacity:.75}
 }

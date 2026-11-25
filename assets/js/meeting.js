@@ -18,7 +18,7 @@
   const overlay = document.getElementById("deckOverlay");
   const overlayFrame = document.getElementById("deckFrame");
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
-  const LEAVE_MS = 1950;
+  const LEAVE_MS = 1400;
 
   let index = 0;
   let started = false;

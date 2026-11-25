@@ -110,7 +110,7 @@
       clearTimeout(cur._leaveTimer);
       cur.classList.remove("is-leaving");
       cur.classList.toggle("is-same-media",
-        started && next !== index && !!mediaSrc[index] && mediaSrc[index] === mediaSrc[prevSceneIndex]);
+        started && next !== prevSceneIndex && !!mediaSrc[index] && mediaSrc[index] === mediaSrc[prevSceneIndex]);
       cur.classList.add("is-active");
     }
     sceneStart = clock;
