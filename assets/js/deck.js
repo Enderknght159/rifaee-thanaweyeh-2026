@@ -313,6 +313,11 @@
       if (window.parent !== window) window.parent.postMessage({ type: "close-deck" }, "*");
     });
     deck.appendChild(back);
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape" && window.parent !== window) {
+        window.parent.postMessage({ type: "close-deck" }, "*");
+      }
+    });
   }
 
   window.addEventListener("message", e => {

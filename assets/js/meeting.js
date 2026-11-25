@@ -83,7 +83,10 @@
       s.classList.toggle("is-now", k === index);
       s.classList.toggle("is-done", k <= index);
     });
-    indexItems.forEach((it, k) => it.classList.toggle("is-current", k === index));
+    indexItems.forEach((it, k) => {
+      it.classList.toggle("is-current", k === index);
+      it.setAttribute("aria-current", k === index ? "true" : "false");
+    });
 
     sceneNo.innerHTML = `${index + 1} <b>/</b> ${N}`;
 
