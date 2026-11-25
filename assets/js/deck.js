@@ -70,6 +70,10 @@
   let autoPaused = false;
 
   const counters = scenes.map(s => Array.from(s.querySelectorAll("[data-count]")));
+  const mediaSrc = scenes.map(s => {
+    const img = s.querySelector(".media img");
+    return img ? img.getAttribute("src") : null;
+  });
 
   function setCounters(k) {
     counters[k].forEach(el => {
@@ -83,6 +87,7 @@
 
   function enter(n) {
     const next = ((n % N) + N) % N;
+    const prevSceneIndex = index;
     const prev = scenes[index];
     if (next === index && started) {
       // restart current scene cleanly
@@ -98,12 +103,14 @@
         clearTimeout(prev._leaveTimer);
         prev._leaveTimer = setTimeout(() => {
           if (!prev.classList.contains("is-active")) prev.classList.remove("is-leaving");
-        }, 1120);
+        }, 1950);
       }
       index = next;
       const cur = scenes[index];
       clearTimeout(cur._leaveTimer);
       cur.classList.remove("is-leaving");
+      cur.classList.toggle("is-same-media",
+        started && next !== index && !!mediaSrc[index] && mediaSrc[index] === mediaSrc[prevSceneIndex]);
       cur.classList.add("is-active");
     }
     sceneStart = clock;
@@ -293,6 +300,29 @@
       }, 120);
     }
   }
+
+  /* ---------- embed mode (داخل عرض اجتماع أولياء الأمور) ---------- */
+  const isEmbed = new URLSearchParams(location.search).get("embed") === "1";
+  if (isEmbed) {
+    document.documentElement.classList.add("is-embed");
+    const back = document.createElement("button");
+    back.type = "button";
+    back.className = "embedBack";
+    back.innerHTML = '<svg class="ico" viewBox="0 0 24 24"><use href="#i-prev"/></svg><span>العودة إلى الاجتماع</span>';
+    back.addEventListener("click", () => {
+      if (window.parent !== window) window.parent.postMessage({ type: "close-deck" }, "*");
+    });
+    deck.appendChild(back);
+  }
+
+  window.addEventListener("message", e => {
+    const data = e.data || {};
+    if (data.type === "deck-pause") { autoPaused = false; setPlaying(false); }
+    else if (data.type === "deck-play") { autoPaused = false; setPlaying(true); }
+    else if (data.type === "deck-go" && Number(data.n)) {
+      enter(Number(data.n) - 1); setPlaying(true);
+    }
+  });
 
   window.__deck = {
     go(n) { enter(clamp(n, 1, N) - 1); setPlaying(true); return index + 1; },

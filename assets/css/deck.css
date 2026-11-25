@@ -122,11 +122,11 @@ ul{padding:0;list-style:none}
 }
 .scene.is-active{
   opacity:1;visibility:visible;pointer-events:auto;z-index:3;
-  animation:sceneIn 1.15s cubic-bezier(.32,.72,0,1) both;
+  animation:sceneIn 1.9s cubic-bezier(.33,1,.68,1) both;
 }
 .scene.is-leaving{
   opacity:1;visibility:visible;pointer-events:none;z-index:2;
-  animation:sceneOut 1.1s cubic-bezier(.4,0,.2,1) both;
+  animation:sceneOut 1.9s cubic-bezier(.33,1,.68,1) both;
 }
 .scene--paper{
   background-color:var(--sand-light);
@@ -151,9 +151,21 @@ ul{padding:0;list-style:none}
   width:100%;height:100%;object-fit:cover;object-position:center;
   transform:scale(1.045);
   will-change:transform;
+  backface-visibility:hidden;
 }
-.scene.is-active .media img{animation:kenburns var(--dur,9s) cubic-bezier(.37,0,.63,1) both}
+/* انتقال ناعم بين الصور: ضبابية واحدة طويلة على طبقة الصورة، ثم انزلاق هادئ.
+   الضبابية تنتهي قبل حركة الكين برنز حتى لا تختلط الحركتان وتُحدث اهتزازاً. */
+.scene.is-active .media{animation:mediaIn 1800ms cubic-bezier(.33,1,.68,1)}
+.scene.is-active .media img{
+  animation:kenburns calc(var(--dur,9s) - 1800ms) cubic-bezier(.37,0,.63,1) 1800ms both;
+}
 .scene.is-active:nth-of-type(even) .media img{animation-name:kenburnsAlt}
+/* إذا كانت الصورة نفسها في المشهد التالي: لا انتقال ولا ضبابية بينهما */
+.scene.is-same-media .media{animation:none!important;filter:none!important}
+.scene.is-same-media .media img{
+  animation-delay:0ms!important;
+  animation-duration:var(--dur,9s)!important;
+}
 .media--tint::before{
   content:"";position:absolute;inset:0;z-index:1;
   background:linear-gradient(180deg,rgba(0,130,83,.88),rgba(0,130,83,.64) 60%,rgba(0,113,70,.92));
@@ -266,6 +278,23 @@ ul{padding:0;list-style:none}
 .deck.is-paused .scene.is-active *::after,
 .deck.is-paused .scene.is-leaving,
 .deck.is-paused .scene.is-leaving *{animation-play-state:paused!important}
+
+/* ---------- Embed mode (داخل نافذة عرض الاجتماع) ---------- */
+html.is-embed .topbar{display:none}
+html.is-embed .pausedBadge{top:16px}
+html.is-embed .embedBack{
+  position:fixed;z-index:80;inset-inline-start:clamp(12px,2vw,26px);
+  bottom:calc(var(--footH) + 22px);
+  display:inline-flex;align-items:center;gap:.55em;
+  background:var(--mint);color:var(--green-deep);
+  font-family:var(--font-display);font-size:clamp(.78rem,.9vw,1rem);
+  padding:.6em 1.25em;box-shadow:var(--shadow-deep);
+  border-radius:var(--r-pill);cursor:pointer;
+  transition:transform .2s var(--ease),background .25s ease;
+}
+html.is-embed .embedBack:hover{transform:translateY(-2px);background:#fff}
+html.is-embed .embedBack:active{transform:scale(.97)}
+html.is-embed .embedBack .ico{width:16px;height:16px}
 
 /* ---------- Poster (الإطار الذهبي) ---------- */
 .poster{
@@ -683,25 +712,31 @@ ul{padding:0;list-style:none}
 
 /* ---------- Animations ---------- */
 @keyframes sceneIn{
-  0%{opacity:0;transform:scale(1.025);filter:blur(10px)}
-  55%{opacity:1}
-  100%{opacity:1;transform:none;filter:blur(0)}
+  0%{opacity:0}
+  60%{opacity:1}
+  100%{opacity:1}
 }
 @keyframes sceneOut{
-  0%{opacity:1;transform:none;filter:blur(0)}
-  100%{opacity:0;transform:scale(1.02);filter:blur(16px)}
+  0%{opacity:1}
+  35%{opacity:1}
+  100%{opacity:0}
+}
+@keyframes mediaIn{
+  0%{filter:blur(26px) brightness(.94) saturate(1.12)}
+  55%{filter:blur(6px) brightness(1) saturate(1.04)}
+  100%{filter:blur(0) brightness(1) saturate(1)}
 }
 @keyframes bgDrift{
   from{transform:translate3d(0,0,0)}
   to{transform:translate3d(-26px,-18px,0)}
 }
 @keyframes kenburns{
-  0%{transform:scale(1.02) translate3d(0,0,0)}
-  100%{transform:scale(1.06) translate3d(-1.1%,-.6%,0)}
+  0%{transform:scale(1.055) translate3d(-.9%,-.5%,0)}
+  100%{transform:scale(1.03) translate3d(0,0,0)}
 }
 @keyframes kenburnsAlt{
-  0%{transform:scale(1.06) translate3d(1%,-.4%,0)}
-  100%{transform:scale(1.02) translate3d(0,0,0)}
+  0%{transform:scale(1.03) translate3d(.5%,-.2%,0)}
+  100%{transform:scale(1.055) translate3d(-.9%,-.5%,0)}
 }
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes posterUp{
@@ -847,7 +882,8 @@ ul{padding:0;list-style:none}
 @media (prefers-reduced-motion: reduce){
   .scene.is-active{animation:none!important;transform:none!important;filter:none!important}
   .scene.is-leaving{animation:none!important;opacity:0!important;visibility:hidden!important}
-  .scene.is-active .media img{animation:none!important;transform:scale(1.035)}
+  .scene.is-active .media,
+  .scene.is-active .media img{animation:none!important;filter:none!important;transform:scale(1.035)}
   .scene.is-active.scene--paper::before,
   .scene.is-active.scene--green::before,
   .scene.is-active .media--tint::after{animation:none!important}
